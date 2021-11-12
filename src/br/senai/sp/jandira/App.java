@@ -8,7 +8,5 @@ public class App {
 		
 		FrameCadastroAlunos frame = new FrameCadastroAlunos();
 		frame.setVisible(true);
-		
 	}
-
 }

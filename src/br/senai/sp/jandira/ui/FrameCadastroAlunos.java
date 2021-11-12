@@ -6,12 +6,15 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 
@@ -106,12 +109,13 @@ public class FrameCadastroAlunos extends JFrame {
 				
 				String txtMatri = txtMatricula.getText();
 				String txtName = txtNome.getText();
-				Periodo periodo = (Periodo) comboModelPeriodo.getSelectedItem();
-				
+				String periodoString = comboModelPeriodo.getSelectedItem().toString();
+				Periodo periodoEnum = Periodo.getValueForEnum(periodoString);
+		
 				Aluno aluno = new Aluno();
 				aluno.setMatricula(txtMatri);
 				aluno.setNome(txtName);
-				aluno.setPeriodo(periodo);
+				aluno.setPeriodo(periodoEnum);
 				
 				ds1t.gravar(aluno, cont);
 				cont++;
@@ -121,6 +125,25 @@ public class FrameCadastroAlunos extends JFrame {
 				txtMatricula.requestFocus();
 				
 				modelAlunos.addElement(aluno.getNome());
+				
+				if (cont == ds1t.getTamanho()) {
+					btnSalvar.setEnabled(false);
+					JOptionPane.showMessageDialog(null, "A turma já enchu!", "Cheio", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+		
+		
+		listAlunos.addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				// TODO Auto-generated method stub
+				Aluno aluno = ds1t.listarAluno(listAlunos.getSelectedIndex());
+				txtMatricula.setText(aluno.getMatricula());
+				txtNome.setText(aluno.getNome());
+				
+				comboPeriodo.setSelectedIndex(aluno.getPeriodo().ordinal());
 			}
 		});
 	}

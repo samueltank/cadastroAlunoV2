@@ -7,7 +7,7 @@ public class AlunoRepository {
 	private Aluno[] turma;
 	
 	public AlunoRepository() { // método construtor;
-		turma = new Aluno[6];
+		turma = new Aluno[3];
 	}
 	
 	public AlunoRepository(int quantidadeAlunos) { // sobrecarga de construtor;
@@ -26,5 +26,7 @@ public class AlunoRepository {
 		return turma;
 	}
 	
-
+	public int getTamanho() {
+		return turma.length;
+	}
 }
